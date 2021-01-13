@@ -1,0 +1,59 @@
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorator="layout/main_template">
+
+<div layout:fragment="main_section" class="container mt-4">
+
+    <form th:action="@{/search}" method="get" class="form-row p-1">
+        <div class="col-lg-2">
+            <label th:text="#{label.where_to}"></label>
+            <input class="form-control" type="text" name="city" th:value="${param.city}">
+        </div>
+        <div class="col-lg-2">
+            <label th:text="#{label.price_from}"></label>
+            <input class="form-control" type="number" min="0" name="price_from" th:value="${param.price_from}">
+        </div>
+        <div class="col-lg-2">
+            <label th:text="#{label.price_to}"></label>
+            <input class="form-control" type="number" min="0" name="price_to" th:value="${param.price_to}">
+        </div>
+        <div class="col-lg-2">
+            <label th:text="#{label.people_amount}"></label>
+            <input class="form-control" type="number" min="0" max="10" name="people_amount" th:value="${param.people_amount}">
+        </div>
+        <div class="col-lg-2">
+            <label th:text="#{label.rooms_amount}"></label>
+            <input class="form-control" type="number" min="0" max="10" name="rooms_amount" th:value="${param.rooms_amount}">
+        </div>
+
+        <div class="col-lg-2">
+            <button class="btn btn-success" style="margin-top: 32px;" th:text="#{btn.search}"></button>
+        </div>
+    </form>
+
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div th:each="ht:${all_hotels}">
+                <div class="card w-100 mt-2" >
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${ht.name} + ' ' + ${ht.stars} + ' stars'"></h5>
+                        <p class="card-text" th:text="${ht.description}"></p>
+                        <a href="#" class="btn btn-primary" th:text="#{label.more}"></a>
+                    </div>
+                    <div class="card-footer" th:text="${ht.country} + ' - ' + ${ht.city}"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row my-3">
+        <div class="col-md-12">
+            <th:blok th:each="id : ${#numbers.sequence(1, count_page)}">
+                <a class="btn btn-primary mr-1" th:classappend="${id}==${#request.getParameter('page')} ? 'active' : '' "
+                   th:href="@{/search(page=${id})}" th:text="${id}"></a>
+            </th:blok>
+        </div>
+    </div>
+
+</div>

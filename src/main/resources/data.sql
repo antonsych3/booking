@@ -1,0 +1,1 @@
+# INSERT INTO hotels VALUES (null, 'Rixos',  'Germany', 'Berlin','Very cool hotel', 5, now(), null, null)

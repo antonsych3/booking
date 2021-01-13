@@ -1,0 +1,69 @@
+<html xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+layout:decorator="layout/main_template">
+
+<div layout:fragment="main_section" class="container my-4">
+
+    <div class="row">
+        <div class="col-md-4 offset-md-4">
+            <form th:action="@{'/add_user'}" method="post" class="border rounded p-5">
+                <div class="form-group">
+                    <label th:text="#{label.email}"></label>
+                    <input type="email" name="email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label th:text="#{label.password}"></label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label th:text="#{label.confirm_password}"></label>
+                    <input type="password" name="re_password" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label th:text="#{label.full_name}"></label>
+                    <input type="text" name="full_name" class="form-control">
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-success" th:text="#{btn.add}"></button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="row" sec:autorize="hasRole('ROLE_ADMIN')">
+        <div class="col-md-8 offset-md-2">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th th:text="#{label.id}"></th>
+                        <th th:text="#{label.email}"></th>
+                        <th th:text="#{label.full_name}"></th>
+                        <th th:text="#{label.roles}"></th>
+                        <th th:text="#{label.details}"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="usr : ${users}" class="p-2">
+                        <td th:text="${usr.id}"></td>
+                        <td th:text="${usr.email}"></td>
+                        <td th:text="${usr.fullName}"></td>
+                        <td>
+                            <span class="mr-2"  th:each="role:${usr.roles}" th:text="${role.role}"></span>
+                        </td>
+                        <td>
+                            <a th:href="@{'/user_details/'+${usr.id}}" class="btn btn-info btn-sm" th:text="#{label.details}"></a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row">
+                <div class="col-md-12">
+                    <th:blok th:each="id : ${#numbers.sequence(1, count_page)}">
+                    <a class="btn btn-primary mr-1" th:classappend="${id}==${#request.getParameter('page')} ? 'active':''" th:href="@{/users(page=${id})}" th:text="${id}"></a>
+                </th:blok></div>
+            </div>
+        </div>
+    </div>
+
+</div>

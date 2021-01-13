@@ -1,0 +1,30 @@
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      layout:decorator="layout/main_template">
+
+<div layout:fragment="main_section" class="container mt-4">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th th:text="#{label.hotel_name}"></th>
+                    <th th:text="#{label.country}"></th>
+                    <th th:text="#{label.stars}"></th>
+                    <th sec:authorize="hasRole('ROLE_MODERATOR')"  th:text="#{label.details}"></th>
+                </tr>
+                </thead>
+                <tbody th:each="h:${all_hotels}">
+                <tr>
+                    <td th:text="${h.getName()}"></td>
+                    <td th:text="${h.getCountry()}"></td>
+                    <td th:text="${h.getStars()}"></td>
+                    <td sec:authorize="hasRole('ROLE_MODERATOR')"><a class="btn-sm btn-outline-info" th:href="@{'/details/hotel_id/'+ ${h.id}}" th:text="#{btn.edit}"></a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
